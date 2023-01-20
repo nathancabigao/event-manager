@@ -8,6 +8,14 @@
   <p>Thanks for coming to our conference.  We couldn't have done it without you!</p>
 
   <p>
+    <% if phone == 'Bad number' %>
+        We did not receive a valid phone number at the time of your registration. If you would like to receive mobile alerts, please email our support team.</p>
+    <% else %>
+        Thank you for signing up for mobile alerts! Your phone number was successfully registered.
+    <% end %>
+  </p>
+
+  <p>
     Political activism is at the heart of any democracy and your voice needs to be heard.
     Please consider reaching out to your following representatives:
   </p>
