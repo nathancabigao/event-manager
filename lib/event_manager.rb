@@ -4,6 +4,7 @@ require 'csv'
 require 'google/apis/civicinfo_v2'
 require 'erb'
 require 'time'
+require 'date'
 
 def clean_zipcode(zipcode)
   zipcode.to_s.rjust(5, '0')[0..4]
@@ -46,7 +47,13 @@ end
 
 # Finds the best hour, and returns it
 def analyze_reg_times(reg_times)
-  reg_times.group_by { |time| Time.strptime(time, '%m/%d/%Y %H:%M').hour }.max_by { |k, v| v.size }[0]
+  reg_times.group_by { |time| Time.strptime(time, '%m/%d/%Y %H:%M').hour }.max_by { |_k, v| v.size }[0]
+end
+
+def find_best_day(reg_times)
+  weekdays = %w[Sunday Monday Tuesday Wednesday Thursday Friday Saturday]
+  wday = reg_times.group_by { |date| Date.strptime(date, '%m/%d/%Y %H:%M').wday }.max_by { |_k, v| v.size }[0]
+  weekdays[wday]
 end
 
 puts 'EventManager Initialized.'
@@ -76,3 +83,5 @@ end
 
 best_hour = analyze_reg_times(reg_times)
 puts "The best hour to run ads is #{best_hour}."
+best_day = find_best_day(reg_times)
+puts "The day of the week with the most registrations is #{best_day}."
